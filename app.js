@@ -4,6 +4,9 @@ const bodyParser = require('body-parser');
 const { Sequelize } = require('sequelize');
 const userProfilesRoutes = require('./routes/userProfilesRoutes');
 const authRoutes = require('./routes/authRoutes');
+const environmentalDataRoutes = require('./routes/environmentalData');
+const communityReportsRoutes = require('./routes/communityReports');
+const environmentalAlertsRoutes = require('./routes/environmentalAlertsRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -19,10 +22,16 @@ const sequelize = new Sequelize('ecoTrack', 'root', '', {
 
 // Models
 const UserProfiles = require('./models/UserProfiles')(sequelize);
+const EnvironmentalData = require('./models/EnvironmentalData')(sequelize);
+const CommunityReports = require('./models/CommunityReports')(sequelize);
+const EnvironmentalAlerts = require('./models/EnvironmentalAlerts')(sequelize);
 
 // Routes
 app.use('/api/userProfiles', userProfilesRoutes(UserProfiles));
 app.use('/api/auth', authRoutes(UserProfiles)); 
+app.use('/api/environmentalData', environmentalDataRoutes(EnvironmentalData));
+app.use('/api/communityReports', communityReportsRoutes(CommunityReports));
+app.use('/api/environmentalAlerts', environmentalAlertsRoutes(EnvironmentalAlerts));
 
 // Server setup
 sequelize
